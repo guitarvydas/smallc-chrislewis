@@ -23,7 +23,8 @@ ArrayAccessor =
 Expression = OrTerm ("," OrTerm)*
 OrTerm = AndTerm (("||" | "|") AndTerm)*
 AndTerm = BooleanTerm (("&&" | "&") BooleanTerm)*
-BooleanTerm = UnaryTerm (booleanOperator UnaryTerm)*
+BooleanTerm = BinaryTerm (booleanOperator BinaryTerm)*
+BinaryTerm = UnaryTerm (binaryOperator UnaryTerm)*
 UnaryTerm = unaryPrefixOperator? PostfixTerm
 PostfixTerm = AtomicTerm unaryPostfixOperator?
 AtomicTerm =
@@ -36,9 +37,11 @@ AtomicTerm =
 Sign = "+" | "-"
 ArrayRval = Primary "[" Expression "]"
 FunctionCall = Primary ArgList
-Primary = ParenthesizedExpression | ident | number | character | string
+Primary = ParenthesizedExpression | AssignmentExpression | ident | number | character | string
+AssignmentExpression = Lval "=" Expression
 ParenthesizedExpression = "(" Expression ")"
 booleanOperator = "<=" | ">=" | "<" | ">" | "==" | "!="
+binaryOperator = "+" | "-" | "*" | "/" | "%" | "|" | "^" | "&" | ">>" | "<<"
 unaryPrefixOperator = "++" | "--" | "!"
 unaryPostfixOperator = "++" | "--"
 character = "'" any "'"
@@ -111,5 +114,7 @@ stringBegin = "\""
 stringEnd = "\""
 deref = "*"
 semiColon = ";"
-number = digit+
+number =
+    "0x" hexDigit+ -- hex
+  | digit+ -- decimal
 }

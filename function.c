@@ -110,7 +110,7 @@ int	t;
 	int	j, legalname, address;
 	char	n[NAMESIZE], c, *argptr;
 
-	FOREVER {
+	while (1) {
 		if (argstk == 0)
 			return;
 		if (match ("*"))
