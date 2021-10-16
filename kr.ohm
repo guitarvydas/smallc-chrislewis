@@ -1,22 +1,102 @@
-kr {
-Main = (IncludeStatement | VariableDefinition)+
+inbkr {
+Main = (IncludeStatement | RoutineDefinition | GlobalVariableDefinition)+
 
-IncludeStatement = ("#include" string) | ("#include" std)
+IncludeStatement = "#include" (string | std)
 
-VariableDefinition = typeIdent VarDef ("," VarDef)* semiColon
+VariableDefinition = typeIdent VarDef ("," VarDef)*
+GlobalVariableDefinition = VariableDefinition semiColon
+VariableDefinitionInBody = VariableDefinition semiColon
+VariableDefinitionInCompound = VariableDefinition semiColon
+VariableDefinitionInParameterList = VariableDefinition semiColon
+
 VarDef = deref? ident ArrayAccessor?
 
-Expression =   ident
-             | number
+RoutineDefinition = ident Parameters KRParameterDefinitions Body
+Parameters = "(" ident* ")"
+KRParameterDefinitions = VariableDefinitionInParameterList*
+Body = CompoundStatement
 
 ArrayAccessor = 
     "[" Expression "]" -- known
   | "[" "]" -- unknown
 
+Expression = OrTerm ("," OrTerm)*
+OrTerm = AndTerm (("||" | "|") AndTerm)*
+AndTerm = BooleanTerm (("&&" | "&") BooleanTerm)*
+BooleanTerm = UnaryTerm (booleanOperator UnaryTerm)*
+UnaryTerm = unaryPrefixOperator? PostfixTerm
+PostfixTerm = AtomicTerm unaryPostfixOperator?
+AtomicTerm =
+  Sign? (
+      ArrayRval
+    | FunctionCall
+    | Primary
+  )
+
+Sign = "+" | "-"
+ArrayRval = Primary "[" Expression "]"
+FunctionCall = Primary ArgList
+Primary = ParenthesizedExpression | ident | number | character | string
+ParenthesizedExpression = "(" Expression ")"
+booleanOperator = "<=" | ">=" | "<" | ">" | "==" | "!="
+unaryPrefixOperator = "++" | "--" | "!"
+unaryPostfixOperator = "++" | "--"
+character = "'" any "'"
+
+ArgList =
+    "(" ")" -- no_args
+  | "(" Expression ("," Expression)* ")" -- with_args
+  
+Statement = 
+      Assignment semiColon -- assign
+    | IfStatement -- if
+    | WhileStatement -- while
+    | SwitchStatement -- switch
+    | DoWhileStatement semiColon -- dowhile
+    | ReturnStatement semiColon -- return
+    | BreakStatement semiColon -- break
+    | ContinueStatement semiColon -- continue
+    | CompoundStatement -- compound
+    | Expression semiColon -- expression
+ 
+
+CompoundStatement = "{" VariableDefinitionInCompound* Statement+ "}"
+Assignment = Lval assignOp Rval
+ExpressionStatement = Expression ("," Expression)*
+IfStatement = "if" "(" Expression ")" Statement ElsePart?
+ElsePart = "else" Statement
+WhileStatement = "while" "(" Expression ")" Statement
+DoWhileStatement = "do" CompoundStatement "while" "(" Expression ")"
+ReturnStatement = "return" Expression?
+BreakStatement = "break"
+ContinueStatement = "continue"
+SwitchStatement = "switch" "(" Expression ")" "{" Case+ "}"
+
+Lval = UnaryTerm
+Rval = Expression
+assignOp =
+    "="
+  | "-="
+  | "+="
+  | "*="
+  | "/="
+  | "%="
+  | ">>="
+  | "<<="
+  | "%="
+  | "^="
+  | "|="
+  
+Case = 
+    "case" Expression ":" Statement+ -- case
+  | "default" ":" Statement+ -- default
+
 typeIdent = typeIdentKW | ident
 typeIdentKW = "int" | "char"
-keyword = typeIdentKW
-ident = ~keyword identFirstChar identFollowChar+
+statementKW = "if" | "else" | "while" | "return" | "break" | "continue"
+  | "switch" | "case" | "default"
+keyword = (typeIdentKW | statementKW) ~identFollowChar
+ident = ~keyword identFirstChar identFollowChar*
 identFirstChar = "_" | letter
 identFollowChar = digit | identFirstChar
 std = stdBegin (~stdEnd any)* stdEnd
@@ -33,5 +113,3 @@ deref = "*"
 semiColon = ";"
 number = digit+
 }
-
-
