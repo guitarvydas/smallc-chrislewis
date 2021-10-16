@@ -1,0 +1,37 @@
+kr {
+Main = (IncludeStatement | VariableDefinition)+
+
+IncludeStatement = ("#include" string) | ("#include" std)
+
+VariableDefinition = typeIdent VarDef ("," VarDef)* semiColon
+VarDef = deref? ident ArrayAccessor?
+
+Expression =   ident
+             | number
+
+ArrayAccessor = 
+    "[" Expression "]" -- known
+  | "[" "]" -- unknown
+
+typeIdent = typeIdentKW | ident
+typeIdentKW = "int" | "char"
+keyword = typeIdentKW
+ident = ~keyword identFirstChar identFollowChar+
+identFirstChar = "_" | letter
+identFollowChar = digit | identFirstChar
+std = stdBegin (~stdEnd any)* stdEnd
+stdBegin = "<"
+stdEnd = ">"
+space += comment
+comment = commentBegin (~commentEnd any)* commentEnd
+commentBegin = "/*"
+commentEnd = "*/"
+string = stringBegin (~stringEnd any)* stringEnd
+stringBegin = "\""
+stringEnd = "\""
+deref = "*"
+semiColon = ";"
+number = digit+
+}
+
+

@@ -1,27 +1,52 @@
-#	Requires System V make
-#	@(#)Makefile 1.5 86/05/13
-.SUFFIXES:	.o .c .c~ .h .h~
-.PRECIOUS:	scclib.a
-#	You'll probabably want to change these.  These are used by the compilers#	to figure out where the include files should go.
 CC=gcc
 
 LIB = scclib.a
 
-FE =	$(LIB)(data.o) \
-	$(LIB)(error.o) \
-	$(LIB)(expr.o) \
-	$(LIB)(function.o) \
-	$(LIB)(gen.o) \
-	$(LIB)(io.o) \
-	$(LIB)(lex.o) \
-	$(LIB)(main.o) \
-	$(LIB)(preproc.o) \
-	$(LIB)(primary.o) \
-	$(LIB)(stmt.o) \
-	$(LIB)(sym.o) \
-	$(LIB)(while.o)
+FE =	(kr_data.c) \
+	(kr_error.c) \
+	(kr_expr.c) \
+	(kr_function.c) \
+	(kr_gen.c) \
+	(kr_io.c) \
+	(kr_lex.c) \
+	(kr_main.c) \
+	(kr_preproc.c) \
+	(kr_primary.c) \
+	(kr_stmt.c) \
+	(kr_sym.c) \
+	(kr_while.c)
 
-all:	scc8080 sccas09 sccvax sccm68k
+c99FE =	(c99_data.c) \
+	(c99_error.c) \
+	(c99_expr.c) \
+	(c99_function.c) \
+	(c99_gen.c) \
+	(c99_io.c) \
+	(c99_lex.c) \
+	(c99_main.c) \
+	(c99_preproc.c) \
+	(c99_primary.c) \
+	(c99_stmt.c) \
+	(c99_sym.c) \
+	(c99_while.c)
+
+FE =	(c99_data.o) \
+	(c99_error.o) \
+	(c99_expr.o) \
+	(c99_function.o) \
+	(c99_gen.o) \
+	(c99_io.o) \
+	(c99_lex.o) \
+	(c99_main.o) \
+	(c99_preproc.o) \
+	(c99_primary.o) \
+	(c99_stmt.o) \
+	(c99_sym.o) \
+	(c99_while.o)
+
+all : fe
+
+fe: $(FE)
 
 $(FE) code8080.o codeas09.o codevax.o codem68k.o: defs.h data.h
 
