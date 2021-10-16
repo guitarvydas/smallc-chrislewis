@@ -33,7 +33,7 @@ int	lval[];
 	char	fc;
 
 	k = heir1a (lval);
-	if (match ("=")) {
+if (match ("=")) {
 		if (k == 0) {
 			needlval ();
 			return (0);
@@ -109,12 +109,14 @@ int	lval[];
 		return (k);
 	if (k)
 		rvalue (lval);
-	FOREVER
+	while (1) {
 		if (match ("?")) {
-			testjump (lab1 = getlabel (), FALSE);
+			lab1 = getlabel ();
+			testjump (lab1, FALSE);
 			if (heir1b (lval2))
 				rvalue (lval2);
-			jump (lab2 = getlabel ());
+			lab2 = getlabel ();
+			jump (lab2);
 			printlabel (lab1);
 			col ();
 			nl ();
@@ -130,6 +132,7 @@ int	lval[];
 			nl ();
 		} else
 			return (0);
+	}
 }
 
 heir1b (lval)
