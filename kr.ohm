@@ -12,7 +12,9 @@ VariableDefinitionInParameterList = VariableDefinition semiColon
 VarDef = deref? ident ArrayAccessor?
 
 RoutineDefinition = ident Parameters KRParameterDefinitions Body
-Parameters = "(" ident* ")"
+Parameters =
+    "(" ")" -- no_parameters
+  | "(" ident ("," ident)* ")" -- non_empty
 KRParameterDefinitions = VariableDefinitionInParameterList*
 Body = CompoundStatement
 
@@ -61,6 +63,7 @@ Statement =
     | ContinueStatement semiColon -- continue
     | CompoundStatement -- compound
     | Expression semiColon -- expression
+    | semiColon -- empty
  
 
 CompoundStatement = "{" VariableDefinitionInCompound* Statement+ "}"
@@ -118,3 +121,4 @@ number =
     "0x" hexDigit+ -- hex
   | digit+ -- decimal
 }
+
