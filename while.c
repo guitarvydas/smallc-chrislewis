@@ -40,7 +40,8 @@ findwhile ()
 {
 	int	*ptr;
 
-	for (ptr = wsptr; ptr != ws;) {
+	ptr = wsptr;
+	while (ptr != ws) {
 		ptr = ptr - WSSIZ;
 		if (ptr[WSTYP] != WSSWITCH)
 			return (ptr);
