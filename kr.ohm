@@ -39,12 +39,20 @@ AtomicTerm =
 Sign = "+" | "-"
 ArrayRval = Primary "[" Expression "]"
 FunctionCall = Primary ArgList
-Primary = ParenthesizedExpression | AssignmentExpression | ident | number | character | string
+Primary =
+    ParenthesizedExpression
+  | Deref
+  | AssignmentExpression
+  | ident
+  | number
+  | character
+  | string
 AssignmentExpression = Lval "=" Expression
+Deref = "*" Expression
 ParenthesizedExpression = "(" Expression ")"
 booleanOperator = "<=" | ">=" | "<" | ">" | "==" | "!="
 binaryOperator = "+" | "-" | "*" | "/" | "%" | "|" | "^" | "&" | ">>" | "<<"
-unaryPrefixOperator = "++" | "--" | "!" | "*"
+unaryPrefixOperator = "++" | "--" | "!"
 unaryPostfixOperator = "++" | "--"
 character = "'" any "'"
 
