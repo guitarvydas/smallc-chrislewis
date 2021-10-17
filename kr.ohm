@@ -1,4 +1,4 @@
-inbkr {
+kr {
 Main = (IncludeStatement | RoutineDefinition | GlobalVariableDefinition)+
 
 IncludeStatement = "#include" (string | std)
@@ -42,6 +42,7 @@ FunctionCall = Primary ArgList
 Primary =
     ParenthesizedExpression
   | Deref
+  | AddressOf
   | AssignmentExpression
   | ident
   | number
@@ -49,6 +50,7 @@ Primary =
   | string
 AssignmentExpression = Lval "=" Expression
 Deref = "*" Expression
+AddressOf = "&" Expression
 ParenthesizedExpression = "(" Expression ")"
 booleanOperator = "<=" | ">=" | "<" | ">" | "==" | "!="
 binaryOperator = "+" | "-" | "*" | "/" | "%" | "|" | "^" | "&" | ">>" | "<<"

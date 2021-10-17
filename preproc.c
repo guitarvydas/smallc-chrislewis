@@ -39,21 +39,28 @@ fixiname ()
 	char buf[20];
 	FILE *fp;
 	char buf2[100];
+	int bool;
 
 	ibp = &buf[0];
 
 	if ((c1 = gch ()) != '"' && c1 != '<')
 		return (NULL);
-	for (p = line + lptr; *p ;)
+	p = line + lptr;
+	while (*p)
 		*ibp++ = *p++;
 	c2 = *(--p);
-	if (c1 == '"' ? (c2 != '"') : (c2 != '>')) {
+	if (c1 == '"') {
+	  bool = (c2 != '"');
+	} else {
+	  bool = (c2 != '>');
+	}
+	if (bool) {
 		error ("incorrect delimiter");
 		return (NULL);
 	}
 	*(--ibp) = 0;
-	fp = NULL;
-	if (c1 == '<' || !(fp = fopen(buf, "r"))) {
+	fp = fopen (buf, "r");
+	if (c1 == '<' || !fp) {
 		strcpy(buf2, DEFLIB);
 		strcat(buf2, buf);
 		fp = fopen(buf2, "r");
@@ -71,7 +78,7 @@ fixiname ()
 doasm ()
 {
 	cmode = 0;
-	FOREVER {
+	while (1) {
 		inline ();
 		if (match ("#endasm"))
 			break;
@@ -126,7 +133,7 @@ int ifdef;
 
 ifline()
 {
-	FOREVER {
+  while (1) {
 		inline();
 		if (feof(input)) return(1);
 		if (match("#ifdef")) {
