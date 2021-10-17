@@ -102,7 +102,7 @@ assignOp =
   | "|="
   
 Case = 
-    "case" Expression ":" Statement+ -- case
+    ("case" Expression ":")+ Statement+ -- case
   | "default" ":" Statement+ -- default
 
 typeIdent = typeIdentKW | ident

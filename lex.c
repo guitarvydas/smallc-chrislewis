@@ -156,7 +156,7 @@ int	len;
 
 blanks ()
 {
-	FOREVER {
+	while (1) {
 		while (ch () == 0) {
 			preprocess ();
 			if (feof (input))
