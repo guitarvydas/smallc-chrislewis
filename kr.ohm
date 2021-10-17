@@ -54,7 +54,7 @@ AddressOf = "&" Expression
 ParenthesizedExpression = "(" Expression ")"
 booleanOperator = "<=" | ">=" | "<" | ">" | "==" | "!="
 binaryOperator = "+" | "-" | "*" | "/" | "%" | "|" | "^" | "&" | ">>" | "<<"
-unaryPrefixOperator = "++" | "--" | "!"
+unaryPrefixOperator = "++" | "--" | "!" | "~"
 unaryPostfixOperator = "++" | "--"
 character = "'" singlechar "'"
 singlechar = escapedChar | any

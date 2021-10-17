@@ -17,8 +17,8 @@ int	typ,
 	int	k, j;
 	char	sname[NAMESIZE];
 
-	FOREVER {
-		FOREVER {
+	while (1) {
+		while (1) {
 			if (endst ())
 				return;
 			k = 1;
@@ -57,8 +57,8 @@ int	typ, stclass;
 	int	k, j;
 	char	sname[NAMESIZE];
 
-	FOREVER {
-		FOREVER {
+	while (1) {
+		while (1) {
 			if (endst ())
 				return;
 			if (match ("*"))
