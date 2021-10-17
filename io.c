@@ -87,7 +87,7 @@ inline ()
 	int	k;
 	FILE	*unit;
 
-	FOREVER {
+	while (1) {
 		if (feof (input))
 			return;
 		if ((unit = input2) == NULL)

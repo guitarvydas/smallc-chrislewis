@@ -44,7 +44,7 @@ AssignmentExpression = Lval "=" Expression
 ParenthesizedExpression = "(" Expression ")"
 booleanOperator = "<=" | ">=" | "<" | ">" | "==" | "!="
 binaryOperator = "+" | "-" | "*" | "/" | "%" | "|" | "^" | "&" | ">>" | "<<"
-unaryPrefixOperator = "++" | "--" | "!"
+unaryPrefixOperator = "++" | "--" | "!" | "*"
 unaryPostfixOperator = "++" | "--"
 character = "'" any "'"
 
