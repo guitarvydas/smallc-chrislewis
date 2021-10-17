@@ -100,23 +100,23 @@ int	argc, *argv;
 			fclose (output);
 			pl ("");
 			errs = errs || errfile;
-#ifndef	NOASLD
-		}
-		if (!errfile && !sflag)
-			errs = errs || assemble(p);
-#else
+/* #ifndef	NOASLD */
+/* 		} */
+/* 		if (!errfile && !sflag) */
+/* 			errs = errs || assemble(p); */
+/* #else */
 		} else {
 			fputs("Don't understand file ", stderr);
 			fputs(p, stderr);
 			errs = 1;
 		}
-#endif
+/* #endif */
 		p = *argv++;
 	}
-#ifndef	NOASLD
-	if (!errs && !sflag && !cflag)
-		errs = errs || link();
-#endif
+/* #ifndef	NOASLD */
+/* 	if (!errs && !sflag && !cflag) */
+/* 		errs = errs || link(); */
+/* #endif */
 	exit(errs != 0);
 }
 
@@ -263,7 +263,11 @@ errorsummary ()
 	ot("Macro pool:");
 	outdec(macptr);
 	nl();
-	pl (errcnt ? "Error(s)" : "No errors");
+	if (errcnt) {
+	  pl ("Error(s)");
+	} else {
+	  pl ("No errors");
+	}
 }
 
 typeof(s)

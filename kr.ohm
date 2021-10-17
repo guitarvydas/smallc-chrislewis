@@ -54,7 +54,9 @@ booleanOperator = "<=" | ">=" | "<" | ">" | "==" | "!="
 binaryOperator = "+" | "-" | "*" | "/" | "%" | "|" | "^" | "&" | ">>" | "<<"
 unaryPrefixOperator = "++" | "--" | "!"
 unaryPostfixOperator = "++" | "--"
-character = "'" any "'"
+character = "'" singlechar "'"
+singlechar = escapedChar | any
+escapedChar = "\\" any
 
 ArgList =
     "(" ")" -- no_args
