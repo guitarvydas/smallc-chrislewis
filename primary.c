@@ -172,11 +172,19 @@ int	val[];
 		       (c >= 'a' && c <= 'f') ||
 		       (c >= 'A' && c <= 'F')) {
 			inbyte ();
-			k = k * 16 +
-			    (numeric (c) ? (c - '0') : ((c & 07) + 9));
+			k = k * 16;
+			if (numeric (c)) {
+			  k = k + (c = '0');
+			} else {
+			  k = k + ((c & 07) + 9);
+			}
 		}
 	else {
-		base = (c == '0') ? 8 : 10;
+	  if (c == '0') {
+	    base = 8;
+	  } else {
+	    base = 10;
+	  }
 		while (numeric (ch ())) {
 			c = inbyte ();
 			k = k * base + (c - '0');
@@ -198,7 +206,11 @@ int	val[];
 	if (!match ("'"))
 		return (0);
 	while ((c = gch ()) != 39) {
-		c = (c == '\\') ? spechar(): c;
+	  if (c == '\\') {
+	    c = specchar ();
+	  } else {
+	    c = c;
+	  }
 		k = (k & 255) * 256 + (c & 255);
 	}
 	val[0] = k;
@@ -224,7 +236,11 @@ int	val[];
 			return (1);
 		}
 		c = gch();
-		litq[litptr++] = (c == '\\') ? spechar(): c;
+		if (c == '\\') {
+		  litq[litptr++] = spechar ();
+		} else {
+		  litq[litprt++] = c;
+		}
 	}
 	gch ();
 	litq[litptr++] = 0;
